@@ -1,0 +1,120 @@
+---
+import Basis from '../layouts/Basis.astro';
+import NieuwsKaart from '../components/NieuwsKaart.astro';
+import EditieUitgelicht from '../components/EditieUitgelicht.astro';
+import SocialBlok from '../components/SocialBlok.astro';
+import instellingen from '../data/instellingen.json';
+import { getNieuws, getEdities, huidigeEditie, alineas } from '../lib/utils';
+
+const nieuws = (await getNieuws()).slice(0, 3);
+const editie = huidigeEditie(await getEdities());
+---
+
+<Basis>
+  <section class="held">
+    <div class="container">
+      {
+        instellingen.logo ? (
+          <img class="held__logo" src={instellingen.logo} alt={instellingen.clubnaam} />
+        ) : (
+          <span class="bovenkop">{instellingen.clubnaam}</span>
+        )
+      }
+      <h1>{instellingen.home_titel}</h1>
+      <hr class="goudlijn" />
+      <div class="held__tekst">
+        {alineas(instellingen.home_intro).map((a) => <p>{a}</p>)}
+      </div>
+      <div class="held__knoppen">
+        <a class="knop" href="/contact">Kom kennismaken</a>
+      </div>
+    </div>
+  </section>
+
+  {
+    editie && (
+      <section class="sectie">
+        <div class="container">
+          <EditieUitgelicht editie={editie} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="sectie sectie--wit">
+    <div class="container">
+      <div class="sectiekop">
+        <div>
+          <span class="bovenkop">Actueel</span>
+          <h2>Laatste nieuws</h2>
+        </div>
+        <a href="/nieuws">Alle berichten</a>
+      </div>
+      {
+        nieuws.length ? (
+          <div class="kaarten">
+            {nieuws.map((bericht) => <NieuwsKaart bericht={bericht} />)}
+          </div>
+        ) : (
+          <p>Er zijn nog geen nieuwsberichten.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="sectie">
+    <div class="container">
+      <SocialBlok />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .held {
+    padding: 5rem 0 4rem;
+    background:
+      radial-gradient(ellipse at 85% 0%, rgb(247 168 27 / 0.2), transparent 55%),
+      linear-gradient(180deg, var(--goud-zacht) 0%, var(--creme) 100%);
+    border-bottom: 1px solid var(--lijn);
+  }
+
+  .held__logo {
+    width: min(100%, 22rem);
+    height: auto;
+    margin-bottom: 2rem;
+  }
+
+  .held h1 {
+    max-width: 20ch;
+  }
+
+  .held__tekst {
+    max-width: var(--tekst-max);
+    font-size: 1.15rem;
+    color: var(--inkt-zacht);
+  }
+
+  .held__knoppen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .sectiekop {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .sectiekop h2 {
+    margin: 0;
+  }
+
+  .sectiekop a {
+    font-weight: 600;
+  }
+</style>

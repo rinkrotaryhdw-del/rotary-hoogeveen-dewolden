@@ -1,0 +1,98 @@
+---
+import Basis from '../layouts/Basis.astro';
+import SocialBlok from '../components/SocialBlok.astro';
+import instellingen from '../data/instellingen.json';
+---
+
+<Basis titel="Contact" beschrijving="Neem contact op met Rotary Club Hoogeveen - de Wolden.">
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop">Contact</span>
+      <h1>Kennismaken met onze club</h1>
+      <p class="inleiding">
+        Heeft u een vraag, wilt u een keer aanschuiven bij een bijeenkomst of zoekt u een partner voor
+        een maatschappelijk project? We horen graag van u.
+      </p>
+    </div>
+  </header>
+
+  <section class="sectie">
+    <div class="container contact">
+      <div class="contact__blok">
+        <h2>Gegevens</h2>
+        <dl>
+          <dt>E-mail</dt>
+          <dd><a href={`mailto:${instellingen.email}`}>{instellingen.email}</a></dd>
+          {
+            instellingen.telefoon && (
+              <>
+                <dt>Telefoon</dt>
+                <dd><a href={`tel:${instellingen.telefoon.replace(/\s/g, '')}`}>{instellingen.telefoon}</a></dd>
+              </>
+            )
+          }
+          {
+            instellingen.adres && (
+              <>
+                <dt>Adres</dt>
+                <dd>{instellingen.adres}</dd>
+              </>
+            )
+          }
+        </dl>
+        <a class="knop" href={`mailto:${instellingen.email}`}>Stuur ons een e-mail</a>
+      </div>
+
+      <div class="contact__blok">
+        <h2>Bijeenkomsten</h2>
+        <p>{instellingen.bijeenkomst}</p>
+      </div>
+    </div>
+
+    <div class="container social-ruimte">
+      <SocialBlok titel="Ook online te vinden" />
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
+
+  .contact__blok {
+    background: var(--papier);
+    border: 1px solid var(--lijn);
+    border-top: 4px solid var(--goud);
+    border-radius: var(--radius);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--schaduw);
+  }
+
+  .contact__blok h2 {
+    font-size: 1.4rem;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+
+  dt {
+    font-weight: 600;
+    color: var(--blauw);
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .social-ruimte {
+    margin-top: 2.5rem;
+  }
+</style>

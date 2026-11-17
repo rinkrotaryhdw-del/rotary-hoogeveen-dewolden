@@ -1,0 +1,52 @@
+---
+import { render } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import { getNieuws, formatDatum, isoDatum } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const berichten = await getNieuws();
+  return berichten.map((bericht) => ({ params: { slug: bericht.id }, props: { bericht } }));
+}
+
+const { bericht } = Astro.props;
+const { titel, datum, samenvatting, afbeelding, afbeelding_alt } = bericht.data;
+const { Content } = await render(bericht);
+---
+
+<Basis titel={titel} beschrijving={samenvatting}>
+  <article>
+    <header class="paginakop">
+      <div class="container smal">
+        <span class="bovenkop"><a href="/nieuws">Nieuws</a></span>
+        <h1>{titel}</h1>
+        <time class="datum" datetime={isoDatum(datum)}>{formatDatum(datum)}</time>
+      </div>
+    </header>
+
+    <div class="sectie">
+      <div class="container smal">
+        {afbeelding && <img class="hoofdbeeld" src={afbeelding} alt={afbeelding_alt ?? ''} />}
+        {samenvatting && <p class="inleiding">{samenvatting}</p>}
+        <div class="prose">
+          <Content />
+        </div>
+        <p class="terug"><a href="/nieuws">Terug naar alle nieuws</a></p>
+      </div>
+    </div>
+  </article>
+</Basis>
+
+<style>
+  .hoofdbeeld {
+    width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+  }
+
+  .terug {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--lijn);
+    font-weight: 600;
+  }
+</style>

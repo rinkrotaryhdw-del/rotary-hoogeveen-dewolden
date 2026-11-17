@@ -1,0 +1,65 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import EditieUitgelicht from '../../components/EditieUitgelicht.astro';
+import instellingen from '../../data/instellingen.json';
+import { getEdities, huidigeEditie, alineas, statusLabel } from '../../lib/utils';
+
+const edities = await getEdities();
+const huidig = huidigeEditie(edities);
+const eerdere = edities.filter((e) => e.id !== huidig?.id);
+---
+
+<Basis
+  titel="Muziek achter de voordeur"
+  beschrijving="Muziek achter de voordeur: het jaarlijkse huiskamerfestival van Rotary Club Hoogeveen - de Wolden."
+>
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop">Jaarlijks festival</span>
+      <h1>Muziek achter de voordeur</h1>
+      {alineas(instellingen.muziek_intro).map((a) => <p class="inleiding">{a}</p>)}
+    </div>
+  </header>
+
+  {
+    huidig && (
+      <section class="sectie">
+        <div class="container">
+          <EditieUitgelicht editie={huidig} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    eerdere.length > 0 && (
+      <section class="sectie sectie--wit">
+        <div class="container">
+          <span class="bovenkop">Terugblik</span>
+          <h2>Eerdere edities</h2>
+          <div class="kaarten">
+            {eerdere.map((e) => (
+              <article class="kaart">
+                {e.data.afbeelding && (
+                  <img class="kaart__beeld" src={e.data.afbeelding} alt={e.data.afbeelding_alt ?? ''} loading="lazy" />
+                )}
+                <div class="kaart__inhoud">
+                  <span class="datum">{e.data.jaar}</span>
+                  <h3>
+                    <a href={`/muziek-achter-de-voordeur/${e.id}`}>{e.data.titel}</a>
+                  </h3>
+                  {e.data.opbrengst ? (
+                    <p>Opbrengst: {e.data.opbrengst}{e.data.goed_doel && ` voor ${e.data.goed_doel}`}</p>
+                  ) : (
+                    e.data.samenvatting && <p>{e.data.samenvatting}</p>
+                  )}
+                  <span class="datum">{statusLabel[e.data.kaartverkoop_status]}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Basis>

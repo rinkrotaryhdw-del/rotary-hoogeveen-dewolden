@@ -1,0 +1,298 @@
+/* ------------------------------------------------------------------
+   Rotary Club Hoogeveen - de Wolden — huisstijl
+   Officiële Rotary-kleuren: Royal Blue (PMS 286C) en Gold (PMS 130C),
+   Azure (PMS 2175C) voor focus. Warme crème ondergrond, Lora.
+   Let op: goud is te licht voor tekst op een lichte achtergrond;
+   gebruik het voor vlakken, lijnen en knoppen (met blauwe tekst).
+------------------------------------------------------------------- */
+
+:root {
+  /* Officiële Rotary-kleuren */
+  --blauw: #17458f; /* Rotary Royal Blue */
+  --goud: #f7a81b; /* Rotary Gold */
+  --azuur: #0067c8; /* Azure */
+
+  /* Afgeleide tinten */
+  --blauw-donker: #0f2f63;
+  --goud-licht: #fcd98e;
+  --goud-zacht: #fef3dc;
+
+  --creme: #fbf9f4;
+  --papier: #ffffff;
+  --inkt: #1f2733;
+  --inkt-zacht: #4f5866;
+  --lijn: #e5e1d6;
+  --donker: var(--blauw);
+
+  --font: 'Lora Variable', Lora, Georgia, 'Times New Roman', serif;
+  --max: 72rem;
+  --tekst-max: 42rem;
+  --radius: 6px;
+  --schaduw: 0 1px 2px rgb(23 69 143 / 0.06), 0 6px 20px rgb(23 69 143 / 0.06);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--inkt);
+  background: var(--creme);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--blauw);
+  margin: 0 0 0.6em;
+}
+
+h1 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1.1em;
+}
+
+a {
+  color: var(--blauw);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--inkt);
+}
+
+:focus-visible {
+  outline: 2px solid var(--azuur);
+  outline-offset: 3px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.smal {
+  max-width: var(--tekst-max);
+}
+
+.sectie {
+  padding: 4rem 0;
+}
+
+.sectie--wit {
+  background: var(--papier);
+  border-top: 1px solid var(--lijn);
+  border-bottom: 1px solid var(--lijn);
+}
+
+.bovenkop {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blauw);
+  margin-bottom: 0.75rem;
+}
+
+.goudlijn {
+  width: 3.5rem;
+  height: 3px;
+  background: var(--goud);
+  border: 0;
+  margin: 0 0 1.5rem;
+}
+
+.inleiding {
+  font-size: 1.2rem;
+  color: var(--inkt-zacht);
+}
+
+.knop {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--goud);
+  color: var(--blauw);
+  text-decoration: none;
+  border: 1px solid var(--goud);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.knop:hover {
+  background: var(--blauw);
+  border-color: var(--blauw);
+  color: #fff;
+}
+
+.knop--rand {
+  background: transparent;
+  color: var(--blauw);
+}
+
+.knop--rand:hover {
+  background: var(--goud-zacht);
+  border-color: var(--goud);
+  color: var(--blauw-donker);
+}
+
+.knop[aria-disabled='true'] {
+  background: var(--lijn);
+  border-color: var(--lijn);
+  color: var(--inkt-zacht);
+  cursor: default;
+}
+
+.datum {
+  font-size: 0.9rem;
+  color: var(--inkt-zacht);
+}
+
+.kaarten {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+}
+
+.kaart {
+  background: var(--papier);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--schaduw);
+}
+
+.kaart__beeld {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  background: var(--goud-zacht);
+}
+
+.kaart__inhoud {
+  padding: 1.25rem 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.kaart__inhoud h3 {
+  margin-bottom: 0.4em;
+}
+
+.kaart__inhoud h3 a {
+  color: var(--inkt);
+  text-decoration: none;
+}
+
+.kaart__inhoud h3 a:hover {
+  color: var(--blauw);
+}
+
+.kaart__inhoud p {
+  color: var(--inkt-zacht);
+}
+
+.kaart__meer {
+  margin-top: auto;
+  font-weight: 600;
+}
+
+/* Lopende tekst (nieuwsberichten, edities) */
+.prose {
+  max-width: var(--tekst-max);
+}
+
+.prose h2 {
+  margin-top: 2em;
+}
+
+.prose h3 {
+  margin-top: 1.6em;
+}
+
+.prose img {
+  border-radius: var(--radius);
+  margin: 1.5rem 0;
+}
+
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 3px solid var(--goud);
+  color: var(--inkt-zacht);
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3rem;
+  margin: 0 0 1.1em;
+}
+
+.paginakop {
+  padding: 3.5rem 0 2.5rem;
+  background: linear-gradient(180deg, var(--goud-zacht) 0%, var(--creme) 100%);
+  border-bottom: 1px solid var(--lijn);
+}
+
+.paginakop p {
+  max-width: var(--tekst-max);
+}
+
+.visueel-verborgen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

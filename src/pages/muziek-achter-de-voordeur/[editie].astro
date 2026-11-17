@@ -1,0 +1,92 @@
+---
+import { render } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import EditieUitgelicht from '../../components/EditieUitgelicht.astro';
+import { getEdities } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const edities = await getEdities();
+  return edities.map((editie) => ({ params: { editie: editie.id }, props: { editie } }));
+}
+
+const { editie } = Astro.props;
+const { Content } = await render(editie);
+---
+
+<Basis titel={editie.data.titel.includes(String(editie.data.jaar)) ? editie.data.titel : `${editie.data.titel} ${editie.data.jaar}`} beschrijving={editie.data.samenvatting}>
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop"><a href="/muziek-achter-de-voordeur">Muziek achter de voordeur</a></span>
+      <h1>Editie {editie.data.jaar}</h1>
+    </div>
+  </header>
+
+  <section class="sectie">
+    <div class="container">
+      <EditieUitgelicht editie={editie} metLink={false} />
+      <div class="prose tekst">
+        <Content />
+      </div>
+      {
+        editie.data.galerij.length > 0 && (
+          <section class="galerij" aria-label="Foto's">
+            <h2>Beeld</h2>
+            <ul>
+              {editie.data.galerij.map((foto) => (
+                <li>
+                  <a href={foto.afbeelding} target="_blank" rel="noopener">
+                    <img src={foto.afbeelding} alt={foto.alt ?? ''} loading="lazy" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      <p class="terug"><a href="/muziek-achter-de-voordeur">Alle edities</a></p>
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .tekst {
+    margin-top: 2.5rem;
+  }
+
+  .galerij {
+    margin-top: 3rem;
+  }
+
+  .galerij ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  }
+
+  .galerij a {
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--lijn);
+    background: var(--papier);
+  }
+
+  .galerij img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+  }
+
+  .galerij a:hover img {
+    transform: scale(1.03);
+  }
+
+  .terug {
+    margin-top: 3rem;
+    font-weight: 600;
+  }
+</style>

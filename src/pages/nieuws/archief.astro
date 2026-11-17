@@ -1,0 +1,111 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import { getNieuws, formatDatum, isoDatum } from '../../lib/utils';
+
+const alles = await getNieuws();
+
+// Groeperen per jaar, nieuwste jaar eerst
+const perJaar = new Map<number, typeof alles>();
+for (const bericht of alles) {
+  const jaar = bericht.data.datum.getFullYear();
+  if (!perJaar.has(jaar)) perJaar.set(jaar, []);
+  perJaar.get(jaar)!.push(bericht);
+}
+const jaren = [...perJaar.keys()].sort((a, b) => b - a);
+---
+
+<Basis titel="Nieuwsarchief" beschrijving="Alle nieuwsberichten van Rotary Club Hoogeveen - de Wolden, per jaar.">
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop"><a href="/nieuws">Nieuws</a></span>
+      <h1>Nieuwsarchief</h1>
+      <p class="inleiding">Alle berichten, geordend per jaar.</p>
+      {
+        jaren.length > 1 && (
+          <nav class="jaren" aria-label="Spring naar jaar">
+            {jaren.map((jaar) => <a href={`#jaar-${jaar}`}>{jaar}</a>)}
+          </nav>
+        )
+      }
+    </div>
+  </header>
+
+  <section class="sectie">
+    <div class="container smal">
+      {jaren.length === 0 && <p>Er zijn nog geen nieuwsberichten.</p>}
+      {
+        jaren.map((jaar) => (
+          <section class="jaarblok" id={`jaar-${jaar}`}>
+            <h2>{jaar}</h2>
+            <ul class="archieflijst">
+              {perJaar.get(jaar)!.map((bericht) => (
+                <li>
+                  <time class="datum" datetime={isoDatum(bericht.data.datum)}>
+                    {formatDatum(bericht.data.datum)}
+                  </time>
+                  <a href={`/nieuws/${bericht.id}`}>{bericht.data.titel}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .jaren {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .jaren a {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--goud);
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .jaarblok + .jaarblok {
+    margin-top: 3rem;
+  }
+
+  .jaarblok h2 {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--goud);
+  }
+
+  .archieflijst {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .archieflijst li {
+    display: grid;
+    gap: 0.1rem 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--lijn);
+  }
+
+  @media (min-width: 40rem) {
+    .archieflijst li {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+
+  .archieflijst a {
+    color: var(--inkt);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .archieflijst a:hover {
+    color: var(--blauw);
+    text-decoration: underline;
+  }
+</style>

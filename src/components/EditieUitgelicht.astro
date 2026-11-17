@@ -1,0 +1,104 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { statusLabel } from '../lib/utils';
+
+interface Props {
+  editie: CollectionEntry<'edities'>;
+  metLink?: boolean;
+}
+
+const { editie, metLink = true } = Astro.props;
+const d = editie.data;
+const kaartenBeschikbaar = d.kaartverkoop_status === 'open' && d.kaartverkoop_url;
+---
+
+<div class="editie">
+  {
+    d.afbeelding && (
+      <img
+        class="editie__beeld"
+        src={d.afbeelding}
+        alt={d.afbeelding_alt ?? ''}
+        style={`object-position: ${d.afbeelding_positie}`}
+      />
+    )
+  }
+  <div class="editie__inhoud">
+    <span class="bovenkop">Editie {d.jaar}</span>
+    <h2>{d.titel}</h2>
+    <dl class="editie__feiten">
+      {d.datum && (<><dt>Datum</dt><dd>{d.datum}</dd></>)}
+      {d.locatie && (<><dt>Locatie</dt><dd>{d.locatie}</dd></>)}
+      {d.goed_doel && (<><dt>Goed doel</dt><dd>{d.goed_doel}</dd></>)}
+      <dt>Kaarten</dt><dd>{statusLabel[d.kaartverkoop_status]}</dd>
+    </dl>
+    {d.samenvatting && <p>{d.samenvatting}</p>}
+    <div class="editie__knoppen">
+      {
+        kaartenBeschikbaar ? (
+          <a class="knop" href={d.kaartverkoop_url} target="_blank" rel="noopener noreferrer">
+            Bestel kaarten via Flextickets
+          </a>
+        ) : d.kaartverkoop_status !== 'afgelopen' ? (
+          <span class="knop" aria-disabled="true">{statusLabel[d.kaartverkoop_status]}</span>
+        ) : null
+      }
+      {metLink && (
+        <a class="knop knop--rand" href={`/muziek-achter-de-voordeur/${editie.id}`}>
+          Meer over deze editie
+        </a>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .editie {
+    display: grid;
+    background: var(--papier);
+    border: 1px solid var(--lijn);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--schaduw);
+  }
+
+  @media (min-width: 48rem) {
+    .editie:has(.editie__beeld) {
+      grid-template-columns: 1fr 1.2fr;
+    }
+  }
+
+  .editie__beeld {
+    width: 100%;
+    height: 100%;
+    min-height: 16rem;
+    object-fit: cover;
+  }
+
+  .editie__inhoud {
+    padding: 2rem;
+    border-top: 4px solid var(--goud);
+  }
+
+  .editie__feiten {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 1.25rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .editie__feiten dt {
+    font-weight: 600;
+    color: var(--blauw);
+  }
+
+  .editie__feiten dd {
+    margin: 0;
+  }
+
+  .editie__knoppen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

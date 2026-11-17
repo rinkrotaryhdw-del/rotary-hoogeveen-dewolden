@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDatum, isoDatum } from '../lib/utils';
+
+interface Props {
+  bericht: CollectionEntry<'nieuws'>;
+}
+
+const { bericht } = Astro.props;
+const { titel, datum, samenvatting, afbeelding, afbeelding_alt } = bericht.data;
+const url = `/nieuws/${bericht.id}`;
+---
+
+<article class="kaart">
+  {afbeelding && <img class="kaart__beeld" src={afbeelding} alt={afbeelding_alt ?? ''} loading="lazy" />}
+  <div class="kaart__inhoud">
+    <time class="datum" datetime={isoDatum(datum)}>{formatDatum(datum)}</time>
+    <h3><a href={url}>{titel}</a></h3>
+    {samenvatting && <p>{samenvatting}</p>}
+    <a class="kaart__meer" href={url} aria-hidden="true" tabindex="-1">Lees verder</a>
+  </div>
+</article>

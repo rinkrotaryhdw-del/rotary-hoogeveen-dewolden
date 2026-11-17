@@ -1,0 +1,50 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import NieuwsKaart from '../../components/NieuwsKaart.astro';
+import { getNieuws } from '../../lib/utils';
+
+const AANTAL = 9;
+const alles = await getNieuws();
+const recent = alles.slice(0, AANTAL);
+---
+
+<Basis titel="Nieuws" beschrijving="Nieuws en verslagen van Rotary Club Hoogeveen - de Wolden.">
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop">Actueel</span>
+      <h1>Nieuws</h1>
+      <p class="inleiding">Verslagen, aankondigingen en projecten van onze club.</p>
+    </div>
+  </header>
+
+  <section class="sectie">
+    <div class="container">
+      {
+        recent.length ? (
+          <div class="kaarten">
+            {recent.map((bericht) => <NieuwsKaart bericht={bericht} />)}
+          </div>
+        ) : (
+          <p>Er zijn nog geen nieuwsberichten.</p>
+        )
+      }
+
+      {
+        alles.length > 0 && (
+          <p class="naar-archief">
+            <a class="knop knop--rand" href="/nieuws/archief">
+              Bekijk het nieuwsarchief ({alles.length} {alles.length === 1 ? 'bericht' : 'berichten'})
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .naar-archief {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+</style>

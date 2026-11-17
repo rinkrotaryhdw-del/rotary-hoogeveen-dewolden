@@ -1,0 +1,342 @@
+---
+import '@fontsource-variable/lora';
+import '../styles/global.css';
+import instellingen from '../data/instellingen.json';
+
+interface Props {
+  titel?: string;
+  beschrijving?: string;
+}
+
+const { titel, beschrijving = 'Rotary Club Hoogeveen - de Wolden: een informele, betrokken groep mensen die samen iets terugdoet voor de maatschappij.' } =
+  Astro.props;
+
+const volledigeTitel = titel ? `${titel} | ${instellingen.clubnaam}` : instellingen.clubnaam;
+const pad = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const menu = [
+  { label: 'Home', href: '/' },
+  { label: 'Nieuws', href: '/nieuws' },
+  { label: 'Muziek achter de voordeur', href: '/muziek-achter-de-voordeur' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const isActief = (href: string) => (href === '/' ? pad === '/' : pad.startsWith(href));
+const jaar = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{volledigeTitel}</title>
+    <meta name="description" content={beschrijving} />
+    <meta property="og:title" content={volledigeTitel} />
+    <meta property="og:description" content={beschrijving} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />}
+  </head>
+  <body>
+    <a class="overslaan" href="#inhoud">Direct naar de inhoud</a>
+
+    <header class="kop">
+      <div class="container kop__binnen">
+        {
+          instellingen.logo ? (
+            <a href="/" class="merk merk--logo">
+              <img src={instellingen.logo} alt={`${instellingen.clubnaam} – naar de homepage`} />
+            </a>
+          ) : (
+            <a href="/" class="merk">
+              <span class="merk__klein">Rotary Club</span>
+              <span class="merk__groot">Hoogeveen - de Wolden</span>
+            </a>
+          )
+        }
+
+        <div class="menu">
+          <button class="menu__knop" type="button" aria-expanded="false" aria-controls="hoofdmenu">
+            <span class="menu__streepjes" aria-hidden="true"></span>
+            Menu
+          </button>
+          <nav id="hoofdmenu" aria-label="Hoofdmenu">
+            <ul>
+              {
+                menu.map((item) => (
+                  <li>
+                    <a href={item.href} aria-current={isActief(item.href) ? 'page' : undefined}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="inhoud">
+      <slot />
+    </main>
+
+    <footer class="voet">
+      <div class="container voet__raster">
+        <div>
+          <p class="voet__naam">{instellingen.clubnaam}</p>
+          <p>{instellingen.bijeenkomst}</p>
+        </div>
+        <div>
+          <h2 class="voet__kop">Navigatie</h2>
+          <ul>
+            {menu.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+            <li><a href="/nieuws/archief">Nieuwsarchief</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="voet__kop">Contact</h2>
+          <ul>
+            <li><a href={`mailto:${instellingen.email}`}>{instellingen.email}</a></li>
+            {instellingen.instagram && <li><a href={instellingen.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>}
+            {instellingen.facebook && <li><a href={instellingen.facebook} target="_blank" rel="noopener noreferrer">Facebook</a></li>}
+          </ul>
+        </div>
+      </div>
+      <div class="container voet__onder">
+        <span>&copy; {jaar} {instellingen.clubnaam}</span>
+        <span>Onderdeel van Rotary International</span>
+      </div>
+    </footer>
+
+    <script>
+      const knop = document.querySelector<HTMLButtonElement>('.menu__knop');
+      const menu = document.querySelector('.menu');
+      knop?.addEventListener('click', () => {
+        const open = knop.getAttribute('aria-expanded') === 'true';
+        knop.setAttribute('aria-expanded', String(!open));
+        menu?.classList.toggle('is-open', !open);
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .overslaan {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--inkt);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    z-index: 100;
+  }
+
+  .overslaan:focus {
+    left: 1rem;
+    top: 1rem;
+  }
+
+  .kop {
+    background: var(--papier);
+    border-top: 4px solid var(--goud);
+    border-bottom: 1px solid var(--lijn);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .kop__binnen {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4.75rem;
+  }
+
+  .merk {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    line-height: 1.15;
+    color: var(--inkt);
+  }
+
+  .merk--logo img {
+    height: 3rem;
+    width: auto;
+  }
+
+  .merk__klein {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blauw);
+  }
+
+  .merk__groot {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .menu nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu nav a {
+    display: block;
+    color: var(--inkt);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .menu nav a:hover {
+    color: var(--blauw);
+  }
+
+  .menu nav a[aria-current='page'] {
+    color: var(--blauw);
+    border-bottom-color: var(--goud);
+  }
+
+  .menu__knop {
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--inkt);
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--lijn);
+    border-radius: var(--radius);
+  }
+
+  .menu__streepjes,
+  .menu__streepjes::before,
+  .menu__streepjes::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--inkt);
+    position: relative;
+  }
+
+  .menu__streepjes::before,
+  .menu__streepjes::after {
+    content: '';
+    position: absolute;
+  }
+
+  .menu__streepjes::before {
+    top: -6px;
+  }
+
+  .menu__streepjes::after {
+    top: 6px;
+  }
+
+  /* Mobiel: uitklapmenu */
+  @media (max-width: 59.99rem) {
+    .menu nav {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      background: var(--papier);
+      border-bottom: 1px solid var(--lijn);
+      box-shadow: var(--schaduw);
+      padding: 0.5rem 1.25rem 1rem;
+    }
+
+    .menu.is-open nav {
+      display: block;
+    }
+
+    .menu nav li + li {
+      border-top: 1px solid var(--lijn);
+    }
+  }
+
+  /* Desktop: menu altijd zichtbaar */
+  @media (min-width: 60rem) {
+    .menu__knop {
+      display: none;
+    }
+
+    .menu nav ul {
+      display: flex;
+      gap: 2rem;
+    }
+  }
+
+  .voet {
+    background: var(--donker);
+    color: #dce4f2;
+    margin-top: 4rem;
+    border-top: 4px solid var(--goud);
+  }
+
+  .voet a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .voet a:hover {
+    color: var(--goud-licht);
+    text-decoration: underline;
+  }
+
+  .voet__raster {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+
+  .voet__naam {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .voet__kop {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--goud);
+    margin-bottom: 0.75rem;
+  }
+
+  .voet ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .voet li {
+    margin-bottom: 0.35rem;
+  }
+
+  .voet__onder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+    font-size: 0.875rem;
+  }
+</style>

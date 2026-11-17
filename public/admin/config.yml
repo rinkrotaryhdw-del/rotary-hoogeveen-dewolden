@@ -1,0 +1,157 @@
+# Decap CMS — beheerscherm voor Rotary Club Hoogeveen - de Wolden
+# Bereikbaar via https://<jouw-domein>/admin
+
+backend:
+  name: github
+  repo: rinkrotaryhdw-del/rotary-hoogeveen-dewolden
+  branch: main
+  base_url: https://rotary-hoogeveen-dewolden.pages.dev # <-- aanpassen naar het echte domein
+  auth_endpoint: api/auth
+  commit_messages:
+    create: 'Nieuw: {{collection}} "{{slug}}"'
+    update: 'Bijgewerkt: {{collection}} "{{slug}}"'
+    delete: 'Verwijderd: {{collection}} "{{slug}}"'
+    uploadMedia: 'Afbeelding geüpload: {{path}}'
+    deleteMedia: 'Afbeelding verwijderd: {{path}}'
+
+# Lokaal testen zonder GitHub-login: start 'npx decap-server' naast 'npm run dev'.
+local_backend: true
+
+# Wijzigingen gaan direct live (geen goedkeuringsstap).
+# Wil je eerst concepten laten nakijken? Zet dan: publish_mode: editorial_workflow
+locale: nl
+site_url: https://rotary-hoogeveen-dewolden.pages.dev
+display_url: https://rotary-hoogeveen-dewolden.pages.dev
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: nieuws
+    label: Nieuws
+    label_singular: Nieuwsbericht
+    description: Nieuwsberichten verschijnen op de homepage, de nieuwspagina en in het archief.
+    folder: src/content/nieuws
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    summary: '{{titel}} ({{datum}})'
+    sortable_fields: ['datum', 'titel']
+    preview_path: 'nieuws/{{slug}}'
+    fields:
+      - { label: Titel, name: titel, widget: string }
+      - label: Datum
+        name: datum
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        date_format: 'DD-MM-YYYY'
+        time_format: false
+        default: '{{now}}'
+      - label: Korte samenvatting
+        name: samenvatting
+        widget: text
+        required: false
+        hint: Eén of twee zinnen. Wordt getoond op de nieuwsoverzichten.
+      - { label: Afbeelding, name: afbeelding, widget: image, required: false }
+      - label: Omschrijving afbeelding
+        name: afbeelding_alt
+        widget: string
+        required: false
+        hint: Korte beschrijving van wat er op de foto staat (voor slechtzienden).
+      - label: Nog niet tonen (concept)
+        name: concept
+        widget: boolean
+        default: false
+        required: false
+      - { label: Tekst, name: body, widget: markdown }
+
+  - name: edities
+    label: Muziek achter de voordeur
+    label_singular: Editie
+    description: Eén item per jaar. De nieuwste editie die nog niet is afgelopen wordt uitgelicht.
+    folder: src/content/edities
+    create: true
+    identifier_field: titel
+    slug: '{{fields.jaar}}'
+    summary: '{{jaar}} — {{titel}}'
+    fields:
+      - { label: Jaar, name: jaar, widget: number, value_type: int }
+      - { label: Titel, name: titel, widget: string }
+      - label: Datum
+        name: datum
+        widget: string
+        required: false
+        hint: 'Bijvoorbeeld: zaterdag 12 juni 2027, 14.00 – 22.00 uur'
+      - { label: Locatie, name: locatie, widget: string, required: false }
+      - { label: Korte samenvatting, name: samenvatting, widget: text, required: false }
+      - { label: Goed doel, name: goed_doel, widget: string, required: false }
+      - label: Opbrengst
+        name: opbrengst
+        widget: string
+        required: false
+        hint: Invullen na afloop, bijvoorbeeld "€ 12.500".
+      - label: Status kaartverkoop
+        name: kaartverkoop_status
+        widget: select
+        default: binnenkort
+        options:
+          - { label: Kaartverkoop start binnenkort, value: binnenkort }
+          - { label: Kaartverkoop geopend, value: open }
+          - { label: Uitverkocht, value: uitverkocht }
+          - { label: Afgelopen editie, value: afgelopen }
+      - label: Flextickets-link
+        name: kaartverkoop_url
+        widget: string
+        required: false
+        hint: De volledige link naar de kaartverkoop op Flextickets. De bestelknop verschijnt als de status op "geopend" staat.
+      - { label: Afbeelding, name: afbeelding, widget: image, required: false }
+      - { label: Omschrijving afbeelding, name: afbeelding_alt, widget: string, required: false }
+      - label: Uitsnede afbeelding
+        name: afbeelding_positie
+        widget: select
+        default: center
+        required: false
+        hint: Welk deel van de foto zichtbaar blijft als hij wordt bijgesneden.
+        options:
+          - { label: Links, value: left }
+          - { label: Midden, value: center }
+          - { label: Rechts, value: right }
+      - { label: Uitgebreide tekst, name: body, widget: markdown, required: false }
+      - label: Fotogalerij
+        name: galerij
+        widget: list
+        required: false
+        summary: '{{fields.alt}}'
+        hint: Foto's en posters die onder de tekst van deze editie verschijnen.
+        fields:
+          - { label: Afbeelding, name: afbeelding, widget: image }
+          - { label: Omschrijving, name: alt, widget: string, required: false }
+
+  - name: instellingen
+    label: Algemene instellingen
+    editor:
+      preview: false
+    files:
+      - name: algemeen
+        label: Contactgegevens, social media en introteksten
+        file: src/data/instellingen.json
+        fields:
+          - { label: Clubnaam, name: clubnaam, widget: string }
+          - label: Clublogo
+            name: logo
+            widget: image
+            required: false
+            hint: Het officiële clublogo uit de Rotary Brand Center (bij voorkeur SVG, anders PNG met transparante achtergrond).
+          - { label: E-mailadres, name: email, widget: string }
+          - { label: Telefoon, name: telefoon, widget: string, required: false }
+          - { label: Adres, name: adres, widget: string, required: false }
+          - { label: Bijeenkomsten, name: bijeenkomst, widget: text }
+          - { label: Instagram-link, name: instagram, widget: string, required: false }
+          - { label: Facebook-link, name: facebook, widget: string, required: false }
+          - { label: Kop homepage, name: home_titel, widget: string }
+          - label: Introtekst homepage
+            name: home_intro
+            widget: text
+            hint: Laat een lege regel tussen alinea's.
+          - label: Introtekst Muziek achter de voordeur
+            name: muziek_intro
+            widget: text

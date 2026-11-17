@@ -1,0 +1,102 @@
+---
+import instellingen from '../data/instellingen.json';
+
+interface Props {
+  titel?: string;
+  tekst?: string;
+}
+
+const {
+  titel = 'Volg ons',
+  tekst = 'Blijf op de hoogte van onze activiteiten, projecten en Muziek achter de voordeur.',
+} = Astro.props;
+
+const links = [
+  { naam: 'Instagram', url: instellingen.instagram, icoon: 'instagram' },
+  { naam: 'Facebook', url: instellingen.facebook, icoon: 'facebook' },
+].filter((l) => l.url);
+---
+
+<aside class="social" aria-labelledby="social-titel">
+  <div>
+    <h2 id="social-titel">{titel}</h2>
+    <p>{tekst}</p>
+  </div>
+  <ul class="social__lijst">
+    {
+      links.map((link) => (
+        <li>
+          <a href={link.url} class="social__link" target="_blank" rel="noopener noreferrer">
+            {link.icoon === 'instagram' ? (
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="currentColor">
+                <path d="M13.6 21.5v-8.2h2.8l.4-3.3h-3.2V7.9c0-.9.3-1.6 1.6-1.6h1.7V3.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.4v3.3h2.8v8.2h3.4z" />
+              </svg>
+            )}
+            <span>{link.naam}</span>
+            <span class="visueel-verborgen"> (opent in nieuw venster)</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  .social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    padding: 1.75rem 2rem;
+    background: var(--papier);
+    border: 1px solid var(--lijn);
+    border-left: 4px solid var(--goud);
+    border-radius: var(--radius);
+    box-shadow: var(--schaduw);
+  }
+
+  .social h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .social p {
+    margin: 0;
+    color: var(--inkt-zacht);
+    max-width: 32rem;
+  }
+
+  .social__lijst {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .social__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1.1rem;
+    border: 1px solid var(--goud);
+    border-radius: var(--radius);
+    color: var(--blauw);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .social__link:hover {
+    background: var(--goud);
+    color: var(--blauw);
+  }
+</style>
