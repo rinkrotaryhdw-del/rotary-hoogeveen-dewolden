@@ -1,13 +1,16 @@
 {
   "clubnaam": "Rotary Club Hoogeveen - de Wolden",
   "logo": "/images/logo-club.png",
-  "email": "info@rotary-hoogeveen-dewolden.nl",
+  "email": "estev.beenhakker@gmail.com",
   "telefoon": "",
-  "adres": "Postadres volgt",
-  "bijeenkomst": "Wij komen wekelijks bijeen. Neem contact op als u een keer wilt aanschuiven.",
+  "adres": "",
+  "bijeenkomst": "We komen op woensdag samen bij Restaurant Narline, Hoogeveenseweg 17 in Zuidwolde. De bijeenkomst is van 18.00 tot 20.00 uur, met inloop vanaf 17.30 uur.\n\nWilt u een keer aanschuiven? Neem dan vooraf even contact met ons op.",
+  "bijeenkomst_route": "https://www.google.com/maps/search/?api=1&query=Restaurant+Narline+Hoogeveenseweg+17+Zuidwolde",
   "instagram": "https://www.instagram.com/",
   "facebook": "https://www.facebook.com/rotaryhoogeveendewolden",
   "home_titel": "Welkom bij onze club",
   "home_intro": "Rotary brengt mensen samen die het belangrijk vinden om iets terug te doen voor de maatschappij. Onze club is een informele, betrokken groep mensen die er voor elkaar is, van elkaar leert en samen de handen uit de mouwen steekt.\n\nAls lid leer je mensen buiten je eigen kring kennen, verbreed je je netwerk en kun je samen met anderen iets betekenen voor de samenleving.",
+  "geschiedenis_titel": "Onze geschiedenis",
+  "geschiedenis_tekst": "Rotary Club Hoogeveen - de Wolden is opgericht op 7 april 1980. Sindsdien zetten leden uit Hoogeveen, de Wolden en omgeving zich samen in voor projecten dichtbij en verder weg.",
   "muziek_intro": "Muziek achter de voordeur is ons jaarlijkse huiskamer- en benefietfestival in het centrum van Hoogeveen. Huiskamers, karakteristieke winkels en bijzondere panden openen hun deuren voor kleinschalige optredens, en u wandelt uw eigen route langs de locaties.\n\nHet programma is een brede mix van jazz, blues, pop, rock, klassiek, folk en singer-songwriter. De opbrengst gaat elk jaar naar een lokaal maatschappelijk doel."
 }

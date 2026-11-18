@@ -4,6 +4,7 @@ import NieuwsKaart from '../components/NieuwsKaart.astro';
 import EditieUitgelicht from '../components/EditieUitgelicht.astro';
 import SocialBlok from '../components/SocialBlok.astro';
 import instellingen from '../data/instellingen.json';
+import bestuur from '../data/bestuur.json';
 import { getNieuws, getEdities, huidigeEditie, alineas } from '../lib/utils';
 
 const nieuws = (await getNieuws()).slice(0, 3);
@@ -36,6 +37,26 @@ const editie = huidigeEditie(await getEdities());
       <section class="sectie">
         <div class="container">
           <EditieUitgelicht editie={editie} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    instellingen.geschiedenis_tekst && (
+      <section class="sectie geschiedenis" aria-labelledby="geschiedenis-kop">
+        <div class="container geschiedenis__raster">
+          <p class="geschiedenis__jaar" aria-hidden="true">
+            <span>Sinds</span> {bestuur.opgericht?.match(/\d{4}/)?.[0] ?? '1980'}
+          </p>
+          <div>
+            <span class="bovenkop">Over de club</span>
+            <h2 id="geschiedenis-kop">{instellingen.geschiedenis_titel || 'Onze geschiedenis'}</h2>
+            <div class="geschiedenis__tekst">
+              {alineas(instellingen.geschiedenis_tekst).map((a) => <p>{a}</p>)}
+            </div>
+            <a href="/bestuur">Maak kennis met het bestuur</a>
+          </div>
         </div>
       </section>
     )
@@ -99,6 +120,56 @@ const editie = huidigeEditie(await getEdities());
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 1.5rem;
+  }
+
+  .geschiedenis {
+    border-top: 1px solid var(--lijn);
+  }
+
+  .geschiedenis__raster {
+    display: grid;
+    gap: 1rem 3rem;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+  }
+
+  @media (min-width: 48rem) {
+    .geschiedenis__raster {
+      grid-template-columns: 14rem minmax(0, 1fr);
+    }
+  }
+
+  .geschiedenis__jaar {
+    margin: 0;
+    font-size: clamp(3.5rem, 9vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--blauw);
+    border-left: 6px solid var(--goud);
+    padding-left: 1.25rem;
+  }
+
+  .geschiedenis__jaar span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--inkt-zacht);
+    margin-bottom: 0.4rem;
+  }
+
+  .geschiedenis h2 {
+    margin-top: 0.25rem;
+  }
+
+  .geschiedenis__tekst {
+    max-width: var(--tekst-max);
+    color: var(--inkt-zacht);
+  }
+
+  .geschiedenis a {
+    font-weight: 600;
   }
 
   .sectiekop {

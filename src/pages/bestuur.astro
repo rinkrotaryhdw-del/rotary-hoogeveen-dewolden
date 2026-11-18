@@ -1,0 +1,138 @@
+---
+import Basis from '../layouts/Basis.astro';
+import bestuur from '../data/bestuur.json';
+
+type Functie = { functie: string; naam: string };
+
+const groepen: { titel: string; leden: Functie[] }[] = [
+  { titel: 'Bestuur', leden: bestuur.bestuur ?? [] },
+  { titel: 'Commissies', leden: bestuur.commissies ?? [] },
+].filter((g) => g.leden.length);
+
+const gegevens = [
+  { label: 'Opgericht', waarde: bestuur.opgericht },
+  { label: 'Aantal leden', waarde: bestuur.leden },
+  { label: 'District', waarde: bestuur.district },
+  { label: 'Clubnummer', waarde: bestuur.clubnummer },
+].filter((g) => g.waarde);
+---
+
+<Basis titel="Bestuur" beschrijving="Het bestuur en de commissies van Rotary Club Hoogeveen - de Wolden.">
+  <header class="paginakop">
+    <div class="container">
+      <span class="bovenkop">Over de club{bestuur.clubjaar && ` · clubjaar ${bestuur.clubjaar}`}</span>
+      <h1>Het bestuur</h1>
+      {bestuur.intro && <p class="inleiding">{bestuur.intro}</p>}
+    </div>
+  </header>
+
+  <section class="sectie">
+    <div class="container bestuur">
+      {
+        groepen.map((groep) => (
+          <div class="bestuur__groep">
+            <h2>{groep.titel}</h2>
+            <ul class="bestuur__lijst">
+              {groep.leden.map((lid) => (
+                <li>
+                  <span class="bestuur__functie">{lid.functie}</span>
+                  <span class="bestuur__naam">{lid.naam}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      {
+        gegevens.length > 0 && (
+          <aside class="clubgegevens" aria-labelledby="clubgegevens-kop">
+            <h2 id="clubgegevens-kop">Clubgegevens</h2>
+            <dl>
+              {gegevens.map((g) => (
+                <>
+                  <dt>{g.label}</dt>
+                  <dd>{g.waarde}</dd>
+                </>
+              ))}
+            </dl>
+            <a class="knop" href="/contact">Contact en bijeenkomsten</a>
+          </aside>
+        )
+      }
+    </div>
+  </section>
+</Basis>
+
+<style>
+  .bestuur {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    align-items: start;
+  }
+
+  .bestuur__groep,
+  .clubgegevens {
+    background: var(--papier);
+    border: 1px solid var(--lijn);
+    border-top: 4px solid var(--goud);
+    border-radius: var(--radius);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--schaduw);
+  }
+
+  .bestuur h2 {
+    font-size: 1.4rem;
+  }
+
+  .bestuur__lijst {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .bestuur__lijst li {
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--lijn);
+  }
+
+  .bestuur__lijst li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .bestuur__functie {
+    font-size: 0.9rem;
+    color: var(--inkt-zacht);
+  }
+
+  .bestuur__naam {
+    font-family: var(--font-kop, inherit);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--blauw);
+  }
+
+  .clubgegevens {
+    background: var(--goud-zacht);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+
+  dt {
+    font-weight: 600;
+    color: var(--blauw);
+  }
+
+  dd {
+    margin: 0;
+  }
+</style>

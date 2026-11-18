@@ -1,0 +1,23 @@
+{
+  "intro": "Het bestuur zorgt voor de koers van de club en de organisatie van de bijeenkomsten. Elke commissie heeft een voorzitter die het werk binnen een aandachtsgebied coördineert.",
+  "clubjaar": "",
+  "bestuur": [
+    { "functie": "Voorzitter", "naam": "Harry Draijer" },
+    { "functie": "Inkomend voorzitter", "naam": "Peter Vermeer" },
+    { "functie": "Oud-voorzitter", "naam": "Frédérique Waakop Reijers" },
+    { "functie": "Secretaris", "naam": "Estev Beenhakker" },
+    { "functie": "Penningmeester", "naam": "Dina van Linge" }
+  ],
+  "commissies": [
+    { "functie": "Voorzitter Vocational Service", "naam": "Erik Boer" },
+    { "functie": "Voorzitter Community Service", "naam": "Roelof Beukinga" },
+    { "functie": "Voorzitter International Service", "naam": "Kees-Jan Dommisse" },
+    { "functie": "Voorzitter Youth Service", "naam": "Anne Meijer" },
+    { "functie": "Programmacommissaris", "naam": "Corinne Rodenburg" },
+    { "functie": "Webmaster en internetcommissaris", "naam": "Rink de Klerck" }
+  ],
+  "opgericht": "7 april 1980",
+  "district": "1590",
+  "clubnummer": "10448",
+  "leden": "29"
+}

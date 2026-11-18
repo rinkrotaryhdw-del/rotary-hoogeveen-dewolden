@@ -2,6 +2,7 @@
 import Basis from '../layouts/Basis.astro';
 import SocialBlok from '../components/SocialBlok.astro';
 import instellingen from '../data/instellingen.json';
+import { alineas } from '../lib/utils';
 ---
 
 <Basis titel="Contact" beschrijving="Neem contact op met Rotary Club Hoogeveen - de Wolden.">
@@ -45,7 +46,14 @@ import instellingen from '../data/instellingen.json';
 
       <div class="contact__blok">
         <h2>Bijeenkomsten</h2>
-        <p>{instellingen.bijeenkomst}</p>
+        {alineas(instellingen.bijeenkomst).map((a) => <p>{a}</p>)}
+        {
+          instellingen.bijeenkomst_route && (
+            <a class="knop knop--rand" href={instellingen.bijeenkomst_route} target="_blank" rel="noopener noreferrer">
+              Route plannen
+            </a>
+          )
+        }
       </div>
     </div>
 

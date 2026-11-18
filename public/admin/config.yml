@@ -144,7 +144,15 @@ collections:
           - { label: E-mailadres, name: email, widget: string }
           - { label: Telefoon, name: telefoon, widget: string, required: false }
           - { label: Adres, name: adres, widget: string, required: false }
-          - { label: Bijeenkomsten, name: bijeenkomst, widget: text }
+          - label: Bijeenkomsten
+            name: bijeenkomst
+            widget: text
+            hint: Dag, tijd en locatie. Laat een lege regel tussen alinea's; de eerste alinea staat ook onderaan elke pagina.
+          - label: Routelink bijeenkomstlocatie
+            name: bijeenkomst_route
+            widget: string
+            required: false
+            hint: Bijvoorbeeld een Google Maps-link. Leeg laten om de knop Route plannen te verbergen.
           - { label: Instagram-link, name: instagram, widget: string, required: false }
           - { label: Facebook-link, name: facebook, widget: string, required: false }
           - { label: Kop homepage, name: home_titel, widget: string }
@@ -152,6 +160,44 @@ collections:
             name: home_intro
             widget: text
             hint: Laat een lege regel tussen alinea's.
+          - label: Kop geschiedenis (homepage)
+            name: geschiedenis_titel
+            widget: string
+            required: false
+          - label: Geschiedenis (homepage)
+            name: geschiedenis_tekst
+            widget: text
+            required: false
+            hint: Laat een lege regel tussen alinea's. Leeg laten om het blok te verbergen.
           - label: Introtekst Muziek achter de voordeur
             name: muziek_intro
             widget: text
+      - name: bestuur
+        label: Bestuur en clubgegevens
+        file: src/data/bestuur.json
+        fields:
+          - { label: Introtekst, name: intro, widget: text, required: false }
+          - label: Clubjaar
+            name: clubjaar
+            widget: string
+            required: false
+            hint: 'Bijvoorbeeld: 2026-2027. Leeg laten om niet te tonen.'
+          - label: Bestuursleden
+            name: bestuur
+            widget: list
+            summary: '{{fields.functie}}: {{fields.naam}}'
+            fields:
+              - { label: Functie, name: functie, widget: string }
+              - { label: Naam, name: naam, widget: string }
+          - label: Commissies
+            name: commissies
+            widget: list
+            required: false
+            summary: '{{fields.functie}}: {{fields.naam}}'
+            fields:
+              - { label: Functie, name: functie, widget: string }
+              - { label: Naam, name: naam, widget: string }
+          - { label: Opgericht, name: opgericht, widget: string, required: false }
+          - { label: Aantal leden, name: leden, widget: string, required: false }
+          - { label: District, name: district, widget: string, required: false }
+          - { label: Clubnummer, name: clubnummer, widget: string, required: false }
