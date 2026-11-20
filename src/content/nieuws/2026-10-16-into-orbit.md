@@ -1,6 +1,6 @@
 ---
 titel: 'Into Orbit: een muzikale reis voorbij de dampkring in Theater De Tamboer'
-datum: 2026-11-18
+datum: 2026-10-16
 samenvatting: Met 453 verkochte kaarten zat Theater De Tamboer mooi vol voor Into Orbit, het concert van het Orkest van de Koninklijke Luchtmacht dat onze club organiseerde.
 concept: false
 ---
