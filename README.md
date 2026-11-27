@@ -47,7 +47,7 @@ npm run build        # productieversie in dist/
    - Framework preset: **Astro**
    - Build command: `npm run build`
    - Build output directory: `dist`
-3. Na de eerste build is de site bereikbaar op `https://<projectnaam>.pages.dev`. Een eigen domein koppel je onder **Custom domains**.
+3. De site staat op https://rotarydewoldenhoogeveen.nl (en `rotary-hoogeveen-dewolden.pages.dev`). Het domein is geregistreerd bij mijn.host, met de nameservers van Cloudflare, en gekoppeld onder **Custom domains**.
 
 ### 3. Inloggen voor het beheerscherm (GitHub OAuth App)
 1. GitHub → **Settings** → **Developer settings** → **OAuth Apps** → **New OAuth App**

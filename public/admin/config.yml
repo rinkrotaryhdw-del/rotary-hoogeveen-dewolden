@@ -1,11 +1,11 @@
 # Decap CMS — beheerscherm voor Rotary Club Hoogeveen - de Wolden
-# Bereikbaar via https://<jouw-domein>/admin
+# Bereikbaar via https://rotarydewoldenhoogeveen.nl/admin
 
 backend:
   name: github
   repo: rinkrotaryhdw-del/rotary-hoogeveen-dewolden
   branch: main
-  base_url: https://rotary-hoogeveen-dewolden.pages.dev # <-- aanpassen naar het echte domein
+  base_url: https://rotarydewoldenhoogeveen.nl
   auth_endpoint: api/auth
   commit_messages:
     create: 'Nieuw: {{collection}} "{{slug}}"'
@@ -20,8 +20,8 @@ local_backend: true
 # Wijzigingen gaan direct live (geen goedkeuringsstap).
 # Wil je eerst concepten laten nakijken? Zet dan: publish_mode: editorial_workflow
 locale: nl
-site_url: https://rotary-hoogeveen-dewolden.pages.dev
-display_url: https://rotary-hoogeveen-dewolden.pages.dev
+site_url: https://rotarydewoldenhoogeveen.nl
+display_url: https://rotarydewoldenhoogeveen.nl
 
 media_folder: public/images/uploads
 public_folder: /images/uploads
